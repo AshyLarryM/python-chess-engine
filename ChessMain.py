@@ -42,6 +42,9 @@ def main():
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+                p.quit()
+                sys.exit()
+
             elif e.type == p.MOUSEBUTTONDOWN:
                 location = p.mouse.get_pos()  # X & Y location of the mouse.
                 col = location[0] // SQ_SIZE
@@ -68,8 +71,8 @@ def main():
         clock.tick(MAX_FPS)
         p.display.flip()
 
-    p.quit()
-    sys.exit()
+    # p.quit()
+    # sys.exit()
 
 
 # Responsible for all graphics within a current Game State.
