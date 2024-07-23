@@ -19,23 +19,33 @@ class GameState:
         ]
         self.whiteToMove = True
         self.moveLog = []
-
-    def makeMove(self, move):
+ 
+    # takes a Move as a param and executes.  (this will not work for castling)
+    def makeMove(self, move: 'Move'):
         self.board[move.startRow][move.startCol] = "--" # change to empty space after moving piece.
         self.board[move.endRow][move.endCol] = move.pieceMoved  
         self.moveLog.append(move)  # Log the move so we can undo it later
         self.whiteToMove = not self.whiteToMove  # Swap players after each move
+        
+        
 
+    # UNDO the last move made.
+    def undoMove(self):
+        if len(self.moveLog) != 0:
+            move = self.moveLog.pop()
+            self.board[move.startRow][move.startCol] = move.pieceMoved
+            self.board[move.endRow][move.endCol] = move.pieceCaptured
+            self.whiteToMove = not self.whiteToMove # Switch turn back
 
 class Move:
-    # maps keys to values
+    # maps keys to values for proper chess notation
     # key : value
     ranksToRows = {"1": 7, "2": 6, "3": 5, "4": 4, "5": 3, "6": 2, "7": 1, "8": 0}
     rowsToRanks = {v: k for k, v in ranksToRows.items()}
     filesToCols = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5, "g": 6, "h": 7}
     colsToFiles = {v: k for k, v in filesToCols.items()}
 
-    def __init__(self, startSq, endSq, board):
+    def __init__(self, startSq: tuple[int, int], endSq: tuple[int, int], board: list[list[str]]):
         self.startRow = startSq[0]
         self.startCol = startSq[1]
         self.endRow = endSq[0]
@@ -43,10 +53,10 @@ class Move:
         self.pieceMoved = board[self.startRow][self.startCol]
         self.pieceCaptured = board[self.endRow][self.endCol]
 
-    def getChessNotation(self):
+    def getChessNotation(self) -> str:
         return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(
             self.endRow, self.endCol
         )
 
-    def getRankFile(self, r, c):
+    def getRankFile(self, r: int, c: int) -> str:
         return self.colsToFiles[c] + self.rowsToRanks[r]
