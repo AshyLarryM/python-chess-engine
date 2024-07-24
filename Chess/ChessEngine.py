@@ -1,3 +1,4 @@
+from typing import List, Tuple
 # This class is responsible for storying all of the information about the current state of a chess game.  It will also be responible for determining the valid moves given for any scenario/state.  It will also keep a log of moves.
 
 
@@ -28,7 +29,7 @@ class GameState:
         }
 
         self.whiteToMove = True
-        self.moveLog = []
+        self.moveLog: List['Move'] = []
 
     # takes a Move as a param and executes.  (this will not work for castling)
     def makeMove(self, move: "Move"):
@@ -67,7 +68,7 @@ class GameState:
 
         return moves
 
-    def getPawnMoves(self, r, c, moves):
+    def getPawnMoves(self, r, c, moves: List['Move']):
         if self.whiteToMove:
             if self.board[r - 1][c] == "--":  # 1 square pawn advance for white
                 moves.append(Move((r, c), (r - 1, c), self.board))
@@ -93,7 +94,7 @@ class GameState:
                 if self.board[r + 1][c + 1][0] == "w":
                     moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
-    def getRookMoves(self, r, c, moves):
+    def getRookMoves(self, r, c, moves: List['Move']):
         directions = ((-1, 0), (0, -1), (1, 0), (0, 1)) # Up, left, down, right
         enemy_color = "b" if self.whiteToMove else "w"
         for d in directions:
@@ -112,8 +113,8 @@ class GameState:
                 else: # off board
                     break
                 
-    def getBishopMoves(self, r, c, moves):
-        directions = ((-1, -1), (-1, 1), (1, -1), (1, -1))
+    def getBishopMoves(self, r, c, moves: List['Move']):
+        directions = ((-1, -1), (-1, 1), (1, -1), (1, 1))
         enemy_color = "b" if self.whiteToMove else "w"
         for d in directions:
             for i in range (1, 8):
@@ -132,7 +133,7 @@ class GameState:
                     break
                 
                 
-    def getKnightMoves(self, r, c, moves):
+    def getKnightMoves(self, r, c, moves: List['Move']):
         knightMoves = ((-2, -1,), (-2, 1), (-1, -2), (-1, 2), (1, -2), (1, 2), (2, -1), (2, 1))
         allyColor = "w" if self.whiteToMove else "b"
         for m in knightMoves:
@@ -146,11 +147,11 @@ class GameState:
 
     
 
-    def getQueenMoves(self, r, c, moves):
+    def getQueenMoves(self, r, c, moves: List['Move']):
         self.getRookMoves(r, c, moves)
         self.getBishopMoves(r, c, moves)
 
-    def getKingMoves(self, r, c, moves):
+    def getKingMoves(self, r, c, moves: List['Move']):
         kingMoves = ((-1, 0), (0, -1), (1, 0), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, -1))
         allyColor = "w" if self.whiteToMove else "b"
         for i in range(8):
