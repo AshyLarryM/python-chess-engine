@@ -11,7 +11,7 @@ class GameState:
             ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
             ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
-            ["--", "--", "--", "wQ", "--", "--", "--", "--"],
+            ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
             ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
@@ -86,12 +86,12 @@ class GameState:
                 if r == 1 and self.board[r + 2][c] == "--":
                     moves.append(Move((r, c), (r + 2, c), self.board))
                 # Captures first if checks to make sure we are not capturing out of bounds! (0-7 cols)
-                if c - 1 >= 0:  # Capture Left
-                    if self.board[r + 1][c - 1][0] == "w":
-                        moves.append(Move((r, c), (r + 1, c - 1), self.board))
-                if c + 1 <= 7:  # Capture Right
-                    if self.board[r + 1][c + 1][0] == "w":
-                        moves.append(Move((r, c), (r + 1, c + 1), self.board))
+            if c - 1 >= 0:  # Capture Left
+                if self.board[r + 1][c - 1][0] == "w":
+                    moves.append(Move((r, c), (r + 1, c - 1), self.board))
+            if c + 1 <= 7:  # Capture Right
+                if self.board[r + 1][c + 1][0] == "w":
+                    moves.append(Move((r, c), (r + 1, c + 1), self.board))
 
     def getRookMoves(self, r, c, moves):
         directions = ((-1, 0), (0, -1), (1, 0), (0, 1)) # Up, left, down, right
